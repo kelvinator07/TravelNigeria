@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "412555060823",
+    "firebase_url": "https://travelnigeria-4730d.firebaseio.com",
+    "project_id": "travelnigeria-4730d",
+    "storage_bucket": "travelnigeria-4730d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412555060823:android:5d61ea4c8dcfcf49",
+        "android_client_info": {
+          "package_name": "com.geekykel.travelnigeria"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412555060823-lhm7fv9uhtg70kgcmm9ug0j6kk86pt9s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.geekykel.travelnigeria",
+            "certificate_hash": "95afa99c9864782f19ef7990d9f29e825d013a3c"
+          }
+        },
+        {
+          "client_id": "412555060823-f1iarau5lg6d21anihanepfqefl4lt8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0BTXuqAGDZNX-SXwWFW_c46KTeYEl8gI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "412555060823-f1iarau5lg6d21anihanepfqefl4lt8v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

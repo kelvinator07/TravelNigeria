@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TravelNigeria</string>
+    <string name="action_settings">Settings</string>
+    <string name="save_menu">Save</string>
+    <string name="delete">Delete Deal</string>
+    <string name="insert">New Travel deal</string>
+</resources>
