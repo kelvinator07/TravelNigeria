@@ -6,37 +6,26 @@ import android.os.Bundle;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
-    private ChildEventListener mChildEventListener;
     private RecyclerView mRecyclerView;
 
     @Override
@@ -80,13 +69,11 @@ public class MainActivity extends AppCompatActivity {
 
         MenuItem insertMenu = menu.findItem(R.id.insert_menu);
         if (FirebaseUtil.isAdmin == true) {
-            Toast.makeText(this, "Admin Show insertMenu Menu", Toast.LENGTH_LONG).show();
-            Log.d("FIREBASE", "You Are An Administrator insertMenu");
+            Log.d(TAG, "You Are An Administrator");
             insertMenu.setVisible(true);
         }
         else {
-            Toast.makeText(this, "Not Admin Dont Show insertMenu Menu", Toast.LENGTH_LONG).show();
-            Log.d("FIREBASE", "You Are An Not Administrator insertMenu");
+            Log.d(TAG, "You Are An Not Administrator");
             insertMenu.setVisible(false);
         }
 
@@ -108,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                         .signOut(this)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             public void onComplete(@NonNull Task<Void> task) {
-                                Log.d("FIREBASE", "User Logged Out");
+                                Log.d(TAG, "User Logged Out");
                                 FirebaseUtil.attachListener();
                             }
                         });

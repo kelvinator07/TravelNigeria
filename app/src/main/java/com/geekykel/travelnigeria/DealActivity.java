@@ -25,7 +25,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+/**
+ * Created by Geeky Kelvin on 8/2/2019.
+ * Email: Kelvinator4leo@gmail.com
+ */
 public class DealActivity extends AppCompatActivity {
+
+    private static final String TAG = DealActivity.class.getSimpleName();
 
     private static final int PICTURE_RESULT = 13;
 
@@ -66,8 +72,8 @@ public class DealActivity extends AppCompatActivity {
 
 
         showImage(travelDeal.getImageUrl());
-        Button btnImage = findViewById(R.id.uploadImageBtn);
-        btnImage.setOnClickListener(new View.OnClickListener() {
+
+        mUploadImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -86,14 +92,12 @@ public class DealActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.save_menu, menu);
 
         if (FirebaseUtil.isAdmin) {
-            Toast.makeText(this, "Admin Show Menu", Toast.LENGTH_LONG).show();
             menu.findItem(R.id.delete_menu).setVisible(true);
             menu.findItem(R.id.save_menu).setVisible(true);
             //findViewById(R.id.uploadImageBtn).setVisibility(View.VISIBLE);
             enableEditTexts(true);
         }
         else {
-            Toast.makeText(this, "Not Admin Dont Show Menu", Toast.LENGTH_LONG).show();
             menu.findItem(R.id.delete_menu).setVisible(false);
             menu.findItem(R.id.save_menu).setVisible(false);
             findViewById(R.id.uploadImageBtn).setVisibility(View.GONE);
@@ -118,11 +122,13 @@ public class DealActivity extends AppCompatActivity {
         switch (id) {
             case R.id.save_menu:
                 saveDeal();
-                backToList();
+//                backToList();
+                finish();
                 return true;
             case R.id.delete_menu:
                 deleteDeal();
-                backToList();
+//                backToList();
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -145,15 +151,15 @@ public class DealActivity extends AppCompatActivity {
         travelDeal.setPrice(editTextPrice.getText().toString());
 
         if (travelDeal.getId() == null) {
-            Log.d("FIREBASE", travelDeal.toString());
+            Log.d(TAG, travelDeal.toString());
             mDatabaseReference.push().setValue(travelDeal);
-            Log.d("FIREBASE", "Success FireBase");
+            Log.d(TAG, "New Travel Deal To FireBase");
         } else {
             mDatabaseReference.child(travelDeal.getId()).setValue(travelDeal);
-            Log.d("FIREBASE", "Success FireBase Edit");
+            Log.d(TAG, "Edit Travel Deal In FireBase");
         }
 
-        Toast.makeText(this, "Deal Saved Successfully! Thank You!!!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Deal Saved Successfully!!", Toast.LENGTH_LONG).show();
     }
 
     private void deleteDeal() {
@@ -163,21 +169,20 @@ public class DealActivity extends AppCompatActivity {
         }
 
         mDatabaseReference.child(travelDeal.getId()).removeValue();
-        Toast.makeText(this, "Deal Deleted Successfully! Thank You!!!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Deal Deleted Successfully!", Toast.LENGTH_LONG).show();
 
-        Log.d("FIREBASE image name", travelDeal.getImageName());
-
-        if(travelDeal.getImageName() != null && travelDeal.getImageName().isEmpty() == false) {
-            StorageReference picRef = FirebaseUtil.mFirebaseStorage.getReference().child(travelDeal.getImageName());
-            picRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+        Log.d(TAG, travelDeal.getImageName());
+        if(travelDeal.getImageName() != null && !travelDeal.getImageName().isEmpty()) {
+            StorageReference pictureReference = FirebaseUtil.mFirebaseStorage.getReference().child(travelDeal.getImageName());
+            pictureReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    Log.d("FIREBASE Delete Image", "Image Successfully Deleted");
+                    Log.d(TAG, "Image Successfully Deleted");
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d("FIREBASE Delete Image", e.getMessage());
+                    Log.d(TAG, e.getMessage());
                 }
             });
         }
@@ -194,21 +199,22 @@ public class DealActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
-            StorageReference ref = FirebaseUtil.mStorageReference.child(imageUri.getLastPathSegment());
-            ref.putFile(imageUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            StorageReference reference = FirebaseUtil.mStorageReference.child(imageUri.getLastPathSegment());
+            reference.putFile(imageUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Task<Uri> uri = taskSnapshot.getStorage().getDownloadUrl();
                     while(!uri.isComplete());
                     Uri urls = uri.getResult();
-
                     //String url = taskSnapshot.getStorage().getDownloadUrl().toString();
                     String url = urls.toString();
                     String pictureName = taskSnapshot.getStorage().getPath();
                     travelDeal.setImageUrl(url);
                     travelDeal.setImageName(pictureName);
-                    Log.d("FIREBASE Url: ", url);
-                    Log.d("FIREBASE Name", pictureName);
+
+                    Log.d(TAG + " Url: ", url);
+                    Log.d(TAG + " Name", pictureName);
+
                     showImage(url);
                 }
             });
@@ -217,7 +223,7 @@ public class DealActivity extends AppCompatActivity {
     }
 
     private void showImage(String url) {
-        if (url != null && url.isEmpty() == false) {
+        if (url != null && !url.isEmpty()) {
             int width = Resources.getSystem().getDisplayMetrics().widthPixels;
             Picasso.get()
                     .load(url)

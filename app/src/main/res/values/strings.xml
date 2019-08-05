@@ -4,4 +4,9 @@
     <string name="save_menu">Save</string>
     <string name="delete">Delete Deal</string>
     <string name="insert">New Travel deal</string>
+    <string name="deal_title">Title</string>
+    <string name="deal_price">Price</string>
+    <string name="deal_description">Description</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="logout_menu">Logout</string>
 </resources>

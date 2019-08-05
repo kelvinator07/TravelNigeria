@@ -23,11 +23,15 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Created by GeekyKel on 8/3/2019
+ * Created by Geeky Kelvin on 8/2/2019.
+ * Email: Kelvinator4leo@gmail.com
  */
 public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.TravelDealViewHolder> {
 
+    private static final String TAG = TravelDealAdapter.class.getSimpleName();
+
     private ArrayList<TravelDeal> mTravelDeals;
+
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private ChildEventListener mChildEventListener;
@@ -36,7 +40,6 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
 
     public TravelDealAdapter() {
 
-        //FirebaseUtil.openFirebaseReference("traveldeals", this);
         mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
         mDatabaseReference = FirebaseUtil.mDatabaseReference;
         mTravelDeals = FirebaseUtil.mDeals;
@@ -45,7 +48,7 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 TravelDeal travelDeal = dataSnapshot.getValue(TravelDeal.class);
-                Log.d("Deal: " , travelDeal.getTitle());
+                Log.d(TAG , travelDeal.getTitle());
                 travelDeal.setId(dataSnapshot.getKey());
                 mTravelDeals.add(travelDeal);
                 notifyItemInserted(mTravelDeals.size()-1);
@@ -109,7 +112,6 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
             textViewPrice = itemView.findViewById(R.id.textPrice);
             travelImageDeal = itemView.findViewById(R.id.image);
             itemView.setOnClickListener(this);
-
         }
 
         public void bind(TravelDeal travelDeal) {
@@ -120,16 +122,16 @@ public class TravelDealAdapter extends RecyclerView.Adapter<TravelDealAdapter.Tr
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(View view) {
             int position = getAdapterPosition();
             TravelDeal selectedDeal = mTravelDeals.get(position);
-            Intent intent = new Intent(v.getContext(), DealActivity.class);
+            Intent intent = new Intent(view.getContext(), DealActivity.class);
             intent.putExtra("Deal", selectedDeal);
-            v.getContext().startActivity(intent);
+            view.getContext().startActivity(intent);
         }
 
         private void showImage(String url) {
-            if (url != null && url.isEmpty()==false) {
+            if (url != null && !url.isEmpty()) {
                 Picasso.get()
                         .load(url)
                         .resize(160, 160)

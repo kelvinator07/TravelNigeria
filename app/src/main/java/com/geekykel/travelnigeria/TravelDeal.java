@@ -3,7 +3,8 @@ package com.geekykel.travelnigeria;
 import java.io.Serializable;
 
 /**
- * Created by GeekyKel on 8/2/2019
+ * Created by Geeky Kelvin on 8/2/2019.
+ * Email: Kelvinator4leo@gmail.com
  */
 public class TravelDeal implements Serializable {
 

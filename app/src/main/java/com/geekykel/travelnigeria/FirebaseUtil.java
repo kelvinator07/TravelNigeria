@@ -1,8 +1,6 @@
 package com.geekykel.travelnigeria;
 
-import android.app.Activity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,12 +19,16 @@ import java.util.List;
 import androidx.annotation.NonNull;
 
 /**
- * Created by GeekyKel on 8/2/2019
+ * Created by Geeky Kelvin on 8/2/2019.
+ * Email: Kelvinator4leo@gmail.com
  */
 public class FirebaseUtil {
 
-    public static ArrayList<TravelDeal> mDeals;
+    private static final String TAG = FirebaseUtil.class.getSimpleName();
+
     public static final int RC_SIGN_IN = 123;
+
+    public static ArrayList<TravelDeal> mDeals;
     private static MainActivity caller;
     public static boolean isAdmin;
 
@@ -39,6 +41,7 @@ public class FirebaseUtil {
     public static StorageReference mStorageReference;
 
 
+    // Private constructor to prevent instantiation
     private FirebaseUtil() {}
 
     public static void openFirebaseReference(String ref, final MainActivity callerActivity) {
@@ -90,6 +93,7 @@ public class FirebaseUtil {
     }
 
     private static void checkAdmin(String uid) {
+
         FirebaseUtil.isAdmin = false;
 
         DatabaseReference ref = mFirebaseDatabase.getReference().child("administrators")
@@ -98,8 +102,11 @@ public class FirebaseUtil {
         ChildEventListener listener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
                 FirebaseUtil.isAdmin = true;
-                Log.d("FIREBASE", "You Are An Administrator");
+
+                Log.d(TAG, "You Are An Administrator");
+
                 caller.showMenu();
             }
 
